@@ -44,4 +44,4 @@ def fetchPriceData():
     InsertPriceDayTable(row_list)
     print('done!')
     
-#fetchPriceData()
+fetchPriceData()
