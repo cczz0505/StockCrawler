@@ -120,6 +120,6 @@ class PriceFetcher():
         InsertPriceYearTable(data)
 
 
-fetcher = PriceFetcher()
-fetcher.run()
-del fetcher
+#fetcher = PriceFetcher()
+#fetcher.run()
+#del fetcher

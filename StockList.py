@@ -60,5 +60,5 @@ def stockListOTCByDate(yy, mm, dd):
     
     driver.close()
 
-stockListByDate(2017, 11, 30)  
-stockListOTCByDate(106, 11, 30)
+#stockListByDate(2017, 11, 30)  
+#stockListOTCByDate(106, 11, 30)

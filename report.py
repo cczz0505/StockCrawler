@@ -87,6 +87,10 @@ class StockReport:
         self.ref_low_price_g = None
         self.ref_avg_price_g = None
         self.ref_high_price_g = None
+        self.ref_per_g = None
+        
+        # 現價
+        self.now_price = None
         
     def collectPERReportData(self):
         price_query = GetStockPERReport(self.stock_id)
@@ -197,6 +201,17 @@ class StockReport:
         self.ref_avg_price_g = self.avg_per * self.ref_eps_g
         self.ref_high_price_g = self.avg_max_per * self.ref_eps_g
         
+        # 現價
+        self.now_price = GetPrice(self.stock_id)
+        
+        if not IsFloat(self.now_price):
+            print('查無股價資料')
+            return False
+        
+        self.ref_per_g = self.now_price / self.ref_eps_g
+        
+        return True
+        
     def getEstimatePrice(self):
         self.collectPERReportData()
         self.collectLast4EPSReportData()
@@ -244,7 +259,8 @@ class StockReport:
         return True
     
     def estimatePriceReport(self):
-        self.calcEstimatePriceData()
+        if not self.calcEstimatePriceData():
+            return False
         
         print('穩定型：\n')
         print('便宜價 = {0:>6.2f} x {1:>6.2f} = {2:>6.2f}'.format(self.avg_min_per, self.sum_eps, self.ref_low_price_s))
@@ -255,10 +271,13 @@ class StockReport:
         print('1. {0} x ( 1 + {1:>6.2f} ) = {2:>6.2f}'.format(self.eps_list[-1].eps, self.avg_eps_growth_rate, self.ref_eps_g_1))
         print('2. 由上一年度前三季預測 {0:>6.2f} / 3 * 4 = {1:>6.2f}\n'.format(self.prev_three_eps, self.ref_eps_g_2))
         
-        print('便宜價 = {0:>6.2f} x {1:>6.2f} = {2:>6.2f}'.format(self.avg_min_per, self.ref_eps_g, self.ref_low_price_g))
-        print('持有價 = {0:>6.2f} x {1:>6.2f} = {2:>6.2f}'.format(self.avg_per, self.ref_eps_g, self.ref_avg_price_g))
-        print('昂貴價 = {0:>6.2f} x {1:>6.2f} = {2:>6.2f}'.format(self.avg_max_per, self.ref_eps_g, self.ref_high_price_g))
+        print('預估本益比 = {0:>6.2f}(股價) / {1:>6.2f} = {2:>6.2f}'.format(self.now_price, self.ref_eps_g, self.ref_per_g))
         
+        #print('便宜價 = {0:>6.2f} x {1:>6.2f} = {2:>6.2f}'.format(self.avg_min_per, self.ref_eps_g, self.ref_low_price_g))
+        #print('持有價 = {0:>6.2f} x {1:>6.2f} = {2:>6.2f}'.format(self.avg_per, self.ref_eps_g, self.ref_avg_price_g))
+        #print('昂貴價 = {0:>6.2f} x {1:>6.2f} = {2:>6.2f}'.format(self.avg_max_per, self.ref_eps_g, self.ref_high_price_g))
+        
+        return True
 
 def ShowLowPriceStocks():
     name_dict = GetStockIdNameDict()
@@ -297,7 +316,8 @@ def QuerySingleStockReport():
             if not report.EPSGrowthReport():
                 continue
             
-            report.estimatePriceReport()
+            if not report.estimatePriceReport():
+                continue
         else:
             print('\n無此股票代號資料(%s)\n' % stock_id)
             continue

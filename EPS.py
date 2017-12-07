@@ -100,8 +100,8 @@ def GetAllEPSByYear(year):
         
 
 # EPSQuater table
-data_q = GetAllEPSByQuater()
-InsertEPSQuaterTable(data_q)
+#data_q = GetAllEPSByQuater()
+#InsertEPSQuaterTable(data_q)
 # EPS table
-data_y = GetAllEPSByYear('105') # 102 ~ 105
-InsertEPSTable(data_y)
+#data_y = GetAllEPSByYear('105') # 102 ~ 105
+#InsertEPSTable(data_y)
