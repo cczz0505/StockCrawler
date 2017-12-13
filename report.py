@@ -193,7 +193,7 @@ class StockReport:
         
         # 成長型
         self.ref_eps_g_1 = float(self.eps_list[-1].eps) * (1 + self.avg_eps_growth_rate)
-        self.prev_three_eps = float(self.eps_quater_list[3].eps) + float(self.eps_quater_list[2].eps) + float(self.eps_quater_list[1].eps)
+        self.prev_three_eps = float(self.eps_quater_list[0].eps) + float(self.eps_quater_list[1].eps) + float(self.eps_quater_list[2].eps)
         self.ref_eps_g_2 = self.prev_three_eps / 3 * 4
         
         self.ref_eps_g = min(self.ref_eps_g_1, self.ref_eps_g_2)
